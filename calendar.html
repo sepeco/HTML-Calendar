@@ -1,0 +1,144 @@
+<html>
+<head>
+<title>Calendars in Javascript</title>
+<script>
+
+function is_leap(year)
+{
+	if (year % 400 == 0)
+		return 1;
+	if (year % 100 == 0)
+		return 0;
+	if (year % 4 == 0)
+		return 1;
+	return 0;
+}
+
+function daysInMonth(year, month)
+{
+	if (month == 9 || month == 4 || month == 6 || month == 11)
+		return 30;
+	if (month !=2)
+		return 31;
+	return (28+is_leap(year));
+}
+
+function dayOfWeekFirstOfMonth(year, month)
+{
+	// step 1: calculate day of week of Jan 1st in the correct year
+	// (by reference to Jan 1st, 1900 which was a Monday)
+	var daynumber=1;
+	if (year > 1900)
+		for (i=1900; i<year; i++)
+			daynumber+=365+is_leap(i);
+			
+	// step 2: add the days belonging to the elipsed months (previous to the month of current interest) of the current year
+	if (month > 1);
+	{
+		for (i=1; i<month; i++)
+			daynumber+=daysInMonth(year, i);
+	}
+	
+	daynumber %= 7;
+	
+	return daynumber;
+}
+
+function dayName(n) {
+	switch (n) {
+		case 0:
+			return "Sunday";
+		case 1:
+			return "Monday";
+		case 2:
+			return "Tuesday";
+		case 3:
+			return "Wednesday";
+		case 4:
+			return "Thursday";
+		case 5:
+			return "Friday";
+		case 6:
+			return "Saturday";
+		default:
+			return "Error";
+		}
+}
+
+function showCalendar() {
+	var month = document.frmYearMonth.selMonth.value;
+	var year = document.frmYearMonth.txtYear.value;
+	var qwerty = dayOfWeekFirstOfMonth(year, month);
+	var i;
+	var j;
+	
+	var calline = "<TABLE border = 1.5 align=center><TR><tr  bgcolor = #736AFF ><TD width = 100px><b>Sun </TD><TD width = 100px><b>Mon </b></TD><TD width = 100px><b>Tue </b></TD><TD width = 100px><b>Wed </b></TD><TD width = 100px><b>Thur </b></TD><TD width = 100px><b>Fri </b></TD><TD width = 100px><b>Sat </b></TD></TD><TR>";
+	
+		for ( i=0; i< qwerty; i++)
+			{
+				if (i == qwerty)
+				{
+				}
+				else
+				{
+				calline += "<TD bgcolor=#25383C> </TD>";
+				}
+				
+			}	
+				
+		for (j=1; j <= daysInMonth(year, month); j++)
+			{
+			if ( qwerty == 6 )
+				{
+				calline += "<TD bgcolor=#5CB3FF>" + j + "</TD></TR><TR>";
+				qwerty = 0;
+				}
+				else 
+				{
+				calline += "<TD bgcolor=#5CB3FF>" + j + "</TD>";
+				qwerty ++;
+				}
+			}
+			
+			
+		for (i=qwerty; i<=6; i++)
+			{
+			calline += "<TD bgcolor=#25383C></TD>";
+			}
+		
+		calline += "</TR></TABLE>";
+		document.getElementById("divCalendar").innerHTML = calline;
+	
+}
+</script>
+</head>
+<body bgcolor= #15317E >
+<body>
+<align=center>
+<center><form name='frmYearMonth' >
+	<h4><FONT COLOR="#FFFFFF">Year: </FONT> 
+	  <input name='txtYear' value='2011' style='width:100px'>
+	  
+	  <select name='selMonth'>
+	    <option value="1">January</option>
+	    <option value="2">Febuary</option>
+	    <option value="3">March</option>
+	    <option value="4">April</option>
+	    <option value="5">May</option>
+	    <option value="6">June</option>
+	    <option value="7">July</option>
+	    <option value="8">August</option>
+	    <option value="9">September</option>
+	    <option value="10">October</option>
+	    <option value="11">November</option>
+	    <option value="12">December</option>
+	    
+      </select>
+	  
+	  <input type=button value='Update Calendar' onClick='showCalendar()'>
+    </h4>
+</form></center>
+<div id='divCalendar'</div>
+
+</body>
+</html>
